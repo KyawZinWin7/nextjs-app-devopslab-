@@ -1,0 +1,59 @@
+name: NextJs CI/CD Develop
+
+
+on:
+  push:
+   branches:
+     - develop
+     
+jobs: 
+  build:
+    runs-on: ubuntu-lastest
+
+    steps:
+      - name: Checkout respository
+        uses: actions/checkout@v3
+
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint check
+        run: npm run Lint
+      
+      - name: Run audit check
+        run: npm audit
+
+      - name: Build NextJs application
+        run: npm run build
+
+
+      # - name: Deploy to Production Server
+      #   uses: easingthemes/ssh-deploy@v2.1.5
+      #   env:
+      #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     ARGS: -rltgoDzvO --delete
+      #   with:
+      #     SOURCE: ".*"
+      #     REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+      #     REMOTE_USER: ${{ secrets.REMOTE_USER }}
+      #     TARGET: ${{ secrets.REMOTE_PATH }}
+
+      - name: Restart PM2 on Server
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ${{ secrets.REMOTE_TARGET }}
+            git pull origin develop
+            npm install
+            npm run build
+            pm2 stop devktops-b3 || true
+            pm2 start devktops-b3
+            pm2 save
