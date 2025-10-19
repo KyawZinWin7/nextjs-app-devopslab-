@@ -7,6 +7,7 @@ export default function Home() {
         <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">Welcome to devKZWOps</h1>
         <p className="mt-4 text-lg text-gray-700 dark:text-gray-300">Empowering DevOps for your organization</p>
         <p className="mt-2 text-md text-gray-600 dark:text-gray-400">いつも　がんばっています。</p>
+        <p className='mt-2'>Hello DevOps Engineer </p>
         <Image
           src="/devktops.png"
           alt="devKtOps"
