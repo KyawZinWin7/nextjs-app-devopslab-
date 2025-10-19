@@ -44,7 +44,7 @@ jobs:
       #     REMOTE_USER: ${{ secrets.REMOTE_USER }}
       #     TARGET: ${{ secrets.REMOTE_PATH }}
 
-      - name: Restart PM2 on Server
+      - name: Deploy to Development Server
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.REMOTE_HOST }}
