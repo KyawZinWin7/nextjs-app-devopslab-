@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Lint check
+      - name: Run npm run Lint
         run: npm run Lint
       
       - name: Run audit check
